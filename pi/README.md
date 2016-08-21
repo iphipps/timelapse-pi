@@ -28,7 +28,8 @@ Set correct timezone.
 ### Test Camera
 First enable the camera.
 Test camera functionality by running a python script
-```import picamera from PiCamera
+```
+import picamera from PiCamera
 from time import sleep
 camera = PiCamera()
 camera.start_preview()
@@ -54,5 +55,16 @@ then
 
 See [github](https://github.com/andreafabrizi/Dropbox-Uploader) for instructions.  Of course you could write that part to use scp or just save to disk.  I am using dropbox because they gave be 1 TB and I can quickly use the same location as a cdn for (the website)[../website/README.md]
 
+### Get the Script Running
+
+First copy the sample-configure.py file and call it `configure.pg` with accurate credentials.
+
+Try running the script
+
+`python timelapse_pi.py`
+
+You might find some errors, directories not existing, or the dropbox uploader not working.  Fix these errors.  Note that the script only runs at certain times of the day, you might need to adjust those for testing purposes.
+
+If it all runs, set up a crontab to run `nohup python timelapse_pi.py &` on reboot.  Or manually run the nohup
 
 
