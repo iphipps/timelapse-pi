@@ -91,3 +91,6 @@ ENV/
 # Mac and Configuration Settings
 .DS_Store
 configure.py
+
+# JetBrains Stuff
+.idea
