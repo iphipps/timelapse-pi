@@ -1,7 +1,7 @@
 """
 Timelapse camera modeule. More description goes here
 """
-#from picamera import PiCamera
+from picamera import PiCamera
 from time import sleep
 import time
 import subprocess
@@ -149,8 +149,7 @@ def start_timelapse(config):
     :return: never returns a value
     """
     working_dir = config['file_system']['working_dir'] + "images/"
-    import mock
-    camera = mock.MagicMock() #PiCamera()
+    camera = PiCamera()
     while True:
         if 8 < time.localtime().tm_hour < 15:
             time_string = time.strftime('%y%m%d%H%M')

@@ -32,25 +32,25 @@ class MyTest(unittest.TestCase):
         body = 'hello world'
         # needs a patch of smtplib.SMTP into a mock so it can run offline
         send_email(subject, body, config)
-        pass
 
 
-    def make_video(self):
+    def test_make_video(self):
         #make_video(working_dir)
+        #do note that 'pass' here does NOT indicate test passing, it's just a filler word in python
         pass
 
 
-    def update_dropbox(self):
+    def test_update_dropbox(self):
         #update_dropbox(file, config)
         pass
 
 
-    def update_all_dropbox(self):
+    def test_update_all_dropbox(self):
         #update_all_dropbox(config)
         pass
 
 
-    def start_timelapse(self):
+    def test_start_timelapse(self):
         #start_timelapse(config)
         pass
 
