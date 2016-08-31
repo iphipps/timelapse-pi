@@ -28,7 +28,7 @@ def take_clip(camera, file_name, clip_length=5):
     :param file_name: destination for file to be saved
     :return:
     """
-    camera.vflip = True
+    #camera.vflip = True
     camera.start_preview()
     sleep(clip_length)
     #this is a little weird, you would normally expect to hand it a file object, not a file path
@@ -152,7 +152,7 @@ def start_timelapse(config):
     working_dir = config['file_system']['working_dir'] + "images/"
     camera = PiCamera()
     while True:
-        if 6 < time.localtime().tm_hour < 5:
+        if 6 < time.localtime().tm_hour < 16:
             time_string = time.strftime('%y%m%d%H%M')
             file_name = working_dir + time_string + '.jpg'
             take_clip(camera, file_name)
