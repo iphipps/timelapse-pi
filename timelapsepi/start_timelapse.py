@@ -11,7 +11,7 @@ import smtplib
 import logging
 
 
-def read_json(json_path = "sample-configure.json"):
+def read_json(json_path = "configure.json"):
     """
     Helper function that loads a json from a file and closes the file safely
     :param json_path: string or unicode with relative filepath
@@ -28,7 +28,7 @@ def take_clip(camera, file_name, clip_length=5):
     :param file_name: destination for file to be saved
     :return:
     """
-    camera.vflip = True
+    #camera.vflip = True
     camera.start_preview()
     sleep(clip_length)
     #this is a little weird, you would normally expect to hand it a file object, not a file path
@@ -111,12 +111,13 @@ def update_dropbox(file, config):
     try:
         #this allows us to detct if the subprocess didn't even return
         out = "Subprocess did not run"
-        subprocess_string = '\n'.join(dropbox_uploader,
+        subprocess_string = '\n'.join([dropbox_uploader,
                                       "upload",
                                       staged_file_name,
-                                      remote_file_name)
+                                      remote_file_name])
         out = subprocess.check_call([dropbox_uploader, "upload", staged_file_name, remote_file_name])
         if out is 0:
+            rm_file = os.remove(staged_file_name)
             logger.debug("Zero exit code: %s", out)
         else:
             logger.warn("Nonzero exit code: %s", out)
@@ -151,13 +152,14 @@ def start_timelapse(config):
     working_dir = config['file_system']['working_dir'] + "images/"
     camera = PiCamera()
     while True:
-        if 8 < time.localtime().tm_hour < 15:
+        if 6 < time.localtime().tm_hour < 16:
             time_string = time.strftime('%y%m%d%H%M')
             file_name = working_dir + time_string + '.jpg'
-            update_all_dropbox(config)
             take_clip(camera, file_name)
+            update_all_dropbox(config)
 
         sleep(900)
+
 
 
 if __name__ == '__main__':
