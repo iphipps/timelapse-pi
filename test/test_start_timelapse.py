@@ -26,19 +26,6 @@ class MyTest(unittest.TestCase):
         camera.capture.assert_called_once_with(file_name)
 
 
-    def send_email(self):
-        config = read_json('trivial_config.json')
-        subject = 'hi'
-        body = 'hello world'
-        # needs a patch of smtplib.SMTP into a mock so it can run offline
-        send_email(subject, body, config)
-
-
-    def test_make_video(self):
-        #make_video(working_dir)
-        #do note that 'pass' here does NOT indicate test passing, it's just a filler word in python
-        pass
-
 
     def test_update_dropbox(self):
         #update_dropbox(file, config)
