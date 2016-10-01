@@ -1,0 +1,60 @@
+#!/bin/bash
+
+
+#  $$\      $$\  $$$$$$\  $$$$$$$\  $$$$$$\ $$$$$$$$\ $$\     $$\ 
+#  $$$\    $$$ |$$  __$$\ $$  __$$\ \_$$  _|$$  _____|\$$\   $$  |
+#  $$$$\  $$$$ |$$ /  $$ |$$ |  $$ |  $$ |  $$ |       \$$\ $$  / 
+#  $$\$$\$$ $$ |$$ |  $$ |$$ |  $$ |  $$ |  $$$$$\      \$$$$  /  
+#  $$ \$$$  $$ |$$ |  $$ |$$ |  $$ |  $$ |  $$  __|      \$$  /   
+#  $$ |\$  /$$ |$$ |  $$ |$$ |  $$ |  $$ |  $$ |          $$ |    
+#  $$ | \_/ $$ | $$$$$$  |$$$$$$$  |$$$$$$\ $$ |          $$ |    
+#  \__|     \__| \______/ \_______/ \______|\__|          \__|    
+
+#base TIMELAPSE repo - no trailing /
+TIMELAPSE=/Users/iphipp/sites/timelapse-pi
+
+TEMP_LOCATION=/Users/iphipp/sites/timelapse-pi/temp
+
+
+#  $$$$$$$\   $$$$$$\  $$\   $$\ $$\ $$$$$$$$\                    
+#  $$  __$$\ $$  __$$\ $$$\  $$ |$  |\__$$  __|                   
+#  $$ |  $$ |$$ /  $$ |$$$$\ $$ |\_/    $$ |                      
+#  $$ |  $$ |$$ |  $$ |$$ $$\$$ |       $$ |                      
+#  $$ |  $$ |$$ |  $$ |$$ \$$$$ |       $$ |                      
+#  $$ |  $$ |$$ |  $$ |$$ |\$$$ |       $$ |                      
+#  $$$$$$$  | $$$$$$  |$$ | \$$ |       $$ |                      
+#  \_______/  \______/ \__|  \__|       \__|                      
+#                                                                 
+#                                                                 
+#                                                                 
+#  $$\      $$\  $$$$$$\  $$$$$$$\  $$$$$$\ $$$$$$$$\ $$\     $$\ 
+#  $$$\    $$$ |$$  __$$\ $$  __$$\ \_$$  _|$$  _____|\$$\   $$  |
+#  $$$$\  $$$$ |$$ /  $$ |$$ |  $$ |  $$ |  $$ |       \$$\ $$  / 
+#  $$\$$\$$ $$ |$$ |  $$ |$$ |  $$ |  $$ |  $$$$$\      \$$$$  /  
+#  $$ \$$$  $$ |$$ |  $$ |$$ |  $$ |  $$ |  $$  __|      \$$  /   
+#  $$ |\$  /$$ |$$ |  $$ |$$ |  $$ |  $$ |  $$ |          $$ |    
+#  $$ | \_/ $$ | $$$$$$  |$$$$$$$  |$$$$$$\ $$ |          $$ |    
+#  \__|     \__| \______/ \_______/ \______|\__|          \__|    
+#  
+
+echo "starting"
+
+if [ $1 = "download" ]; then
+	echo "downloading images first"
+	dropbox_uploader.sh download images $TIMELAPSE/images
+fi
+echo "Moving to dir"
+cd $TIMELAPSE
+
+echo "Making Counted Dir"
+mkdir $TIMELAPSE/images/counted
+
+echo "Symlinking counted in order"
+ls $TIMELAPSE/images/*jpg | awk 'BEGIN {count=0} {print "ln -s " $0 " '$TIMELAPSE'/images/counted/" count++ ".jpg"}' > $TIMELAPSE/images/a
+bash $TIMELAPSE/images/a
+
+echo "Making the video"
+cd $TIMELAPSE/images/counted
+ffmpeg -r 15 -start_number 0 -i %d.jpg -s 1280x720 -vcodec libx264 $TIMELAPSE/website/mobx/src/assets/video/testing.mp4 && echo 'Cleaning Up your Mess' && cd $TIMELAPSE && rm -r $TIMELAPSE/images
+
+echo "DONE"
